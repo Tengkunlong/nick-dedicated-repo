@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#0b2f28"/>
+<meta name="description" content="EarLoop 精听循环 — 专治看得懂、听不懂。粘贴任何英文，逐句盲听、纠错、跟读。"/>
+<link rel="manifest" href="./manifest.json"/>
+<title>EarLoop · 精听循环 — 专治看得懂，听不懂</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1ec;--card:#fff;--ink:#16211a;--muted:#5f6d62;--line:#dde3da;--teal:#0d5a4c;--teal2:#0b2f28;--amber:#f2b264;--red:#b03327;--redsoft:#fdecea;--greensoft:#e6f4e9;--green:#177245}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,-apple-system,"PingFang SC",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:16px 14px 56px}
+.hero{background:var(--teal2);color:#eef4ee;border-radius:24px;padding:26px 22px;position:relative;overflow:hidden}
+.hero h1{font-size:28px;line-height:1.25;margin:6px 0 8px}.hero h1 span{color:var(--amber)}
+.hero p{color:#a9c4b6;font-size:14.5px;margin:0;max-width:52ch}
+.badge{font-size:11px;letter-spacing:.18em;font-weight:800;color:#63c7ae}
+.stats{display:flex;gap:8px;margin-top:16px}.stat{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 12px}.stat b{font-size:20px;display:block}.stat span{font-size:12px;color:#a9c4b6}
+.tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:5px;margin-top:16px}
+.tab{flex:1;border:0;background:transparent;padding:12px 6px;border-radius:10px;font-weight:800;cursor:pointer;color:var(--muted)}.tab.on{background:var(--teal);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:14px;box-shadow:0 12px 30px -18px rgba(0,0,0,.25)}
+.sets{display:flex;gap:8px;flex-wrap:wrap}.setbtn{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.setbtn.on{background:#e0efe9;border-color:var(--teal);color:var(--teal)}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}.dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:800;cursor:pointer;background:#fff}.dot.cur{border-color:var(--teal);color:var(--teal);background:#e0efe9}.dot.done{border-color:var(--green);background:var(--greensoft);color:var(--green)}
+.playrow{display:flex;align-items:center;gap:16px;margin:16px 0}.play{width:72px;height:72px;border-radius:50%;border:0;background:var(--teal);color:#fff;font-size:26px;cursor:pointer;flex:none;box-shadow:0 10px 20px -8px rgba(13,90,76,.6)}
+select,textarea,input{font-family:inherit}select{padding:10px;border-radius:10px;border:1.5px solid var(--line)}
+textarea{width:100%;min-height:96px;border:1.5px solid #cbd5c9;border-radius:14px;padding:13px;font-size:17px;font-family:"Source Serif 4",Georgia,serif;line-height:1.6;background:#f7f8f6}
+.btn{border-radius:12px;padding:13px 16px;font-weight:800;border:1.5px solid var(--line);background:#fff;cursor:pointer}.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}.btn.amber{background:#fef3d8;border-color:#d99a2b;color:#8a5a00}
+.row{display:flex;gap:10px;margin-top:12px}.row .btn{flex:1}
+.sentence{font-family:"Source Serif 4",Georgia,serif;font-size:21px;line-height:1.8}.miss{background:var(--redsoft);color:var(--red);padding:1px 5px;border-radius:5px;font-weight:700}
+.score{font-size:36px;font-family:"Source Serif 4",serif;color:var(--teal);font-weight:700}
+.trap{background:#fef3d8;border-radius:12px;padding:12px 14px;font-size:14px;margin-top:12px}.trans{color:var(--muted);border-left:3px solid var(--line);padding-left:12px;margin-top:10px;font-size:14.5px}
+.chip{display:inline-flex;gap:6px;align-items:center;background:var(--redsoft);color:var(--red);border-radius:999px;padding:7px 8px 7px 13px;margin:4px;font-weight:700;font-family:"Source Serif 4",serif;cursor:pointer}.chip small{background:var(--red);color:#fff;border-radius:999px;padding:2px 7px;font-family:Manrope,sans-serif;font-size:11px}
+.hidden{display:none!important}.hint{font-size:12.5px;color:#8a968c}.footer{text-align:center;color:#8a968c;font-size:12px;margin-top:24px;line-height:1.8}
+.progress{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px}.bar{height:100%;background:var(--teal);width:0;transition:.3s}
+</style>
+</head>
+<body><div class="wrap">
+<header class="hero">
+<div class="badge">EARLOOP · LISTENING FOR EVERYONE</div>
+<h1>专治 <span>“看得懂，听不懂”</span></h1>
+<p>中国英语学习者最普遍的痛：单词都认识，文章能读懂，一听就懵。EarLoop 用「盲听 → 纠错 → 跟读」逐句循环，把耳朵练出来。免费、无需注册、打开就能练。</p>
+<div class="stats"><div class="stat"><b id="streak">0</b><span>连续练习天数</span></div><div class="stat"><b id="doneCount">0</b><span>已练透句子</span></div><div class="stat"><b id="weakCount">0</b><span>弱词本单词</span></div></div>
+</header>
+
+<div class="tabs"><button class="tab on" data-tab="train">训练营</button><button class="tab" data-tab="paste">粘贴练习</button><button class="tab" data-tab="weak">弱词本</button></div>
+
+<!-- TRAIN / PASTE shared practice -->
+<section id="panel-practice" class="card">
+<div id="trainControls">
+<div class="sets" id="sets"></div>
+<div class="dots" id="dots"></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted)"><span id="progText">第 1 句</span><span id="setDesc"></span></div><div class="progress"><div class="bar" id="bar"></div></div>
+</div>
+<div id="pasteControls" class="hidden">
+<label style="font-weight:800">粘贴任何英文（课文、新闻、台词、你的材料）</label>
+<textarea id="pasteInput" placeholder="Paste English here. It will be split into sentences automatically..." style="margin-top:8px"></textarea>
+<div class="row"><button class="btn primary" id="startPaste">开始精听这批句子</button><button class="btn" id="clearPaste">清空</button></div>
+<p class="hint">切句后会进入和训练营一样的盲听流程。内容只存在你手机本地，不上传。</p>
+<hr style="border:0;border-top:1px dashed var(--line);margin:16px 0"><div id="pasteList" class="hint"></div>
+</div>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:center">
+<button class="play" id="playBtn" aria-label="播放">▶</button>
+<div><b>第 <span id="playCount">0</span> 次播放</b><div class="hint">先别看原文，听完写下来</div>
+<div style="margin-top:8px;display:flex;gap:6px"><select id="rate"><option value="0.75">0.75× 慢速</option><option value="1" selected>1.0× 原速</option><option value="1.15">1.15× 快速</option></select><select id="accent"><option value="en-GB" selected>英音 🇬🇧</option><option value="en-US">美音 🇺🇸</option></select></div></div>
+</div>
+
+<label style="font-weight:800;display:block;margin-top:6px">✍️ 盲听默写 — 你听到了什么？</label>
+<textarea id="dict" placeholder="Type what you hear..." style="margin-top:8px"></textarea>
+<div class="row"><button class="btn primary" id="checkBtn">对答案，看我错在哪</button><button class="btn" id="showBtn">直接看原文</button></div>
+
+<div id="result" class="hidden">
+<div style="display:flex;gap:12px;align-items:baseline;margin-top:18px"><span class="score" id="score">0%</span><span id="scoreText" style="color:var(--muted)"></span></div>
+<p class="sentence" id="diff"></p><p class="sentence" id="original" style="font-size:18px;color:#333"></p>
+<p class="trans" id="translation"></p><div class="trap" id="trapBox"></div>
+<div class="row"><button class="btn amber" id="loopBtn">🔁 跟读循环 3 遍</button><button class="btn primary" id="nextBtn">下一句 →</button></div>
+<div class="row"><button class="btn" id="prevBtn">← 上一句</button><button class="btn" id="replayBtn">再听一遍</button></div>
+</div>
+</section>
+
+<section id="panel-weak" class="card hidden">
+<h2 style="margin:0 0 6px">弱词本 — 你总是听不出的词</h2>
+<p style="color:var(--muted);font-size:14px;margin:0 0 12px">每次纠错后自动收集。点一个词就能听它的发音，反复听，直到耳朵认识它。</p>
+<div id="weakList"></div>
+<div class="row"><button class="btn" id="clearWeak">清空弱词本</button></div>
+<p class="hint" id="weakEmpty">还没有弱词。去练一句，错词会自动进来。</p>
+</section>
+
+<div class="footer">EarLoop 是开源项目 · 代码在 GitHub: Tengkunlong/nick-dedicated-repo/earloop-app<br>内置句子均为原创仿写（按 IELTS Part 3/4 难度），不使用剑桥真题原文/录音 · 语音由设备系统朗读提供</div>
+</div>
+
+<script>
+const SETS=[
+{id:'part3',name:'IELTS Part 3 学术讨论',desc:'研讨、作业、小组讨论',items:[
+{en:"The tutor suggested that we narrow down our research question before we start collecting any data.",zh:"导师建议我们在开始收集任何数据之前，先缩小研究问题。",trap:"连读：narrow down our 听起来像一个词；弱读：that / we / any 几乎被吞掉。"},
+{en:"What surprised me most was how much the results varied from one group to another.",zh:"最让我惊讶的是，不同组之间的结果差异竟然这么大。",trap:"how much 连读；varied from 的 d 和 f 连在一起，容易听漏。"},
+{en:"If we had used a larger sample, the conclusions would have been far more reliable.",zh:"如果我们用了更大的样本，结论会可靠得多。",trap:"虚拟语气：had used / would have been 是连读重灾区，have 常弱读成 əv。"},
+{en:"The main drawback of the survey is that it relies too heavily on self-reported data.",zh:"这项调查的主要缺点是它过度依赖自我报告的数据。",trap:"drawback / relies too heavily 注意重音；self-reported 连字符词读得很快。"},
+{en:"We need to take into account the fact that participants may change their behaviour when they know they are being observed.",zh:"我们需要考虑到，参与者在知道自己被观察时可能会改变行为。",trap:"take into account 是固定搭配，into 弱读；being observed 被动结构听辨难点。"},
+{en:"Actually, I am not convinced that the benefits outweigh the costs in the long run.",zh:"其实，我并不确信从长远来看收益大于成本。",trap:"句首 Actually 常被吞；outweigh the 中 th 弱读；in the long run 习语。"}
+]},
+{id:'part4',name:'IELTS Part 4 学术讲座',desc:'讲座、科普、独白',items:[
+{en:"Over the past few decades, coastal cities have become increasingly vulnerable to flooding.",zh:"在过去几十年里，沿海城市变得越来越容易遭受洪水。",trap:"increasingly vulnerable 两个长词连读；decades 重音在第一音节。"},
+{en:"The species was thought to be extinct until a small population was rediscovered in a remote valley.",zh:"这个物种曾被认为已经灭绝，直到在一个偏远山谷中重新发现了一个小种群。",trap:"was thought to be 被动 + 弱读密集；until a 连读。"},
+{en:"One explanation is that changes in ocean temperature affect the distribution of nutrients.",zh:"一种解释是，海洋温度的变化会影响营养物质的分布。",trap:"distribution of 中 of 弱读成 əv；temperature 常读成三音节 tem-prə-chə。"},
+{en:"Contrary to popular belief, most of the plastic in the ocean comes from rivers rather than from ships.",zh:"与普遍看法相反，海洋中大部分塑料来自河流，而不是船只。",trap:"Contrary to / rather than 对比结构是 Part 4 出题点，听逻辑词。"},
+{en:"The researchers found that the older trees stored significantly more carbon than the younger ones.",zh:"研究人员发现，老树储存的碳明显比幼树多。",trap:"significantly 重音；stored / younger ones 指代，ones 别漏听。"},
+{en:"What makes this approach unique is that it uses materials that would otherwise go to waste.",zh:"这种方法的独特之处在于，它使用了原本会被浪费的材料。",trap:"What makes... is that... 主语从句结构；would otherwise 连读。"}
+]},
+{id:'work',name:'职场日常英语',desc:'开会、汇报、沟通',items:[
+{en:"Could you walk me through the main points before we jump on the call with the client?",zh:"在我们和客户通话之前，你能带我过一遍要点吗？",trap:"walk me through 是习语，不是走路；jump on the call 口语高频。"},
+{en:"We are a bit behind schedule, so we might need to bring the deadline forward.",zh:"我们有点落后于进度，所以可能需要把截止日期提前。",trap:"behind schedule / bring forward 反义易混，听清 forward。"},
+{en:"From my perspective, the priority should be fixing the issue rather than finding someone to blame.",zh:"在我看来，优先事项应该是解决问题，而不是找人甩锅。",trap:"perspective / rather than 对比；someone to blame 弱读。"},
+{en:"Let me double check the figures and get back to you by the end of the day.",zh:"我核对一下数据，今天下班前回复你。",trap:"double check / get back to you 高频短语连读成块。"},
+{en:"The feedback we received was generally positive, although a few users found the interface confusing.",zh:"我们收到的反馈总体是积极的，尽管有少数用户觉得界面令人困惑。",trap:"although 转折是信号词；generally 常读成三音节。"},
+{en:"If there is anything else you need, please do not hesitate to let me know.",zh:"如果你还需要什么，请随时告诉我。",trap:"do not hesitate to 礼貌套语，hesitate 别听成其他词。"}
+]}
+];
+let curSet=SETS[0], curIdx=0, sentences=curSet.items, playCount=0, checked=new Set(JSON.parse(localStorage.getItem('earloop_done')||'[]'));
+let weak=JSON.parse(localStorage.getItem('earloop_weak')||'{}');
+function $(id){return document.getElementById(id)}
+function saveWeak(){localStorage.setItem('earloop_weak',JSON.stringify(weak));renderStats();renderWeak()}
+function saveDone(){localStorage.setItem('earloop_done',JSON.stringify([...checked]))}
+function todayKey(){return new Date().toISOString().slice(0,10)}
+function bumpStreak(){let s=JSON.parse(localStorage.getItem('earloop_streak')||'{"last":"","n":0}');let t=todayKey();if(s.last!==t){let y=new Date(Date.now()-864e5).toISOString().slice(0,10);s.n=(s.last===y)?s.n+1:1;s.last=t;localStorage.setItem('earloop_streak',JSON.stringify(s))}return s.n}
+function renderStats(){$('streak').textContent=bumpStreak();$('doneCount').textContent=checked.size;$('weakCount').textContent=Object.keys(weak).length}
+function speak(text,times=1){speechSynthesis.cancel();let rate=parseFloat($('rate').value);let lang=$('accent').value;let i=0;function once(){let u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=rate;let vs=speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.startsWith(lang.slice(0,2)));let pick=vs.find(v=>v.lang===lang)||vs[0];if(pick)u.voice=pick;u.onend=()=>{i++;playCount++;$('playCount').textContent=playCount;if(i<times)setTimeout(once,650)};speechSynthesis.speak(u)}once()}
+function renderSets(){$('sets').innerHTML=SETS.map(s=>`<button class="setbtn ${s.id===curSet.id?'on':''}" data-id="${s.id}">${s.name}</button>`).join('');document.querySelectorAll('.setbtn').forEach(b=>b.onclick=()=>{curSet=SETS.find(x=>x.id===b.dataset.id);sentences=curSet.items;curIdx=0;load()})}
+function load(){playCount=0;$('playCount').textContent=0;$('dict').value='';$('result').classList.add('hidden');$('setDesc').textContent=curSet.desc||'';$('progText').textContent=`第 ${curIdx+1} / ${sentences.length} 句`;$('bar').style.width=((curIdx)/Math.max(1,sentences.length)*100)+'%';$('dots').innerHTML=sentences.map((_,i)=>`<button class="dot ${i===curIdx?'cur':''} ${checked.has(curSet.id+'-'+i)||checked.has('paste-'+i)?'done':''}" data-i="${i}">${i+1}</button>`).join('');document.querySelectorAll('.dot').forEach(d=>d.onclick=()=>{curIdx=+d.dataset.i;load()});renderStats()}
+function norm(s){return s.toLowerCase().replace(/[^a-z0-9' ]/g,'').split(/\s+/).filter(Boolean)}
+function check(){let cur=sentences[curIdx];let orig=norm(cur.en);let mine=norm($('dict').value);let miss=[];let html=orig.map(w=>{if(mine.includes(w))return `<span>${w}</span>`;miss.push(w);return `<span class="miss">${w}</span>`}).join(' ');miss.forEach(w=>{weak[w]=(weak[w]||0)+1});saveWeak();let score=orig.length?Math.round((orig.length-miss.length)/orig.length*100):0;$('score').textContent=score+'%';$('scoreText').textContent=score>=90?'太棒了，这句耳朵过关了':score>=60?'接近了，看红色词错在哪':'别灰心，红色就是你的盲区，循环跟读它';$('diff').innerHTML=html;$('original').textContent=cur.en;$('translation').textContent=cur.zh||'';$('trapBox').innerHTML=cur.trap?`<b>👂 听辨陷阱：</b>${cur.trap}`:'<b>👂 提示：</b>注意连读和弱读，把红色词单独多听几遍。';$('result').classList.remove('hidden');if(score>=60){checked.add((curSet?curSet.id:'paste')+'-'+curIdx);saveDone()}loadDotsOnly()}
+function loadDotsOnly(){renderStats()}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');let k=t.dataset.tab;$('panel-weak').classList.toggle('hidden',k!=='weak');$('panel-practice').classList.toggle('hidden',k==='weak');$('trainControls').classList.toggle('hidden',k==='paste');$('pasteControls').classList.toggle('hidden',k!=='paste');if(k==='weak')renderWeak()});
+function renderWeak(){let keys=Object.entries(weak).sort((a,b)=>b[1]-a[1]);$('weakEmpty').style.display=keys.length?'none':'block';$('weakList').innerHTML=keys.map(([w,c])=>`<span class="chip" data-w="${w}">${w}<small>×${c}</small></span>`).join('');document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{let u=new SpeechSynthesisUtterance(ch.dataset.w);u.lang=$('accent').value;speechSynthesis.speak(u)})}
+$('playBtn').onclick=()=>speak(sentences[curIdx].en);
+$('replayBtn').onclick=()=>speak(sentences[curIdx].en);
+$('checkBtn').onclick=check;$('showBtn').onclick=()=>{$('dict').value='';check();$('score').textContent='—'};
+$('loopBtn').onclick=()=>speak(sentences[curIdx].en,3);
+$('nextBtn').onclick=()=>{if(curIdx<sentences.length-1){curIdx++;load()}else{alert('这一组练完了！换一组，或去粘贴你自己的材料继续练。')}};
+$('prevBtn').onclick=()=>{if(curIdx>0){curIdx--;load()}};
+$('clearWeak').onclick=()=>{if(confirm('清空弱词本？')){weak={};saveWeak();renderWeak()}};
+$('startPaste').onclick=()=>{let txt=$('pasteInput').value.trim();if(!txt)return alert('先粘贴英文');let parts=txt.match(/[^.!?]+[.!?]+/g)||[txt];sentences=parts.map(s=>({en:s.trim(),zh:'',trap:''})).filter(x=>x.en.length>2);curSet={id:'paste',name:'我的粘贴',desc:parts.length+' 句'};curIdx=0;$('pasteList').textContent=`已切出 ${sentences.length} 句，开始下面练习 ↓`;load()};
+$('clearPaste').onclick=()=>{$('pasteInput').value='';$('pasteList').textContent=''};
+if('speechSynthesis' in window)speechSynthesis.getVoices();
+renderSets();load();renderWeak();
+</script>
+</body></html>
